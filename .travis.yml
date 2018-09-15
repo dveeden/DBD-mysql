@@ -132,8 +132,6 @@ addons:
       - libaio-dev
       - libnuma-dev
       - libjemalloc-dev
-      - libmysqlclient-dev
-      - libmysqld-dev
       - libwrap0-dev
       - libstdc++5
 
