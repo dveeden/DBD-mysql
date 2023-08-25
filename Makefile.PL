@@ -146,6 +146,7 @@ print "Checking if libs are available for compiling...\n";
 
 assert_lib(
   LIBS => $opt->{libs},
+  debug => 1,
 );
 
 print "Looks good.\n\n";
@@ -372,7 +373,6 @@ it can be found):
 
   mysql_config --cflags
   mysql_config --libs
-  mysql_config --testdb
 
 and so on. See DBD::mysql::INSTALL for details.
 USAGE

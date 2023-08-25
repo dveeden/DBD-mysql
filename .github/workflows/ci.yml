@@ -55,3 +55,23 @@ jobs:
           make
       - name: "Run test"
         run: make test
+
+  test-windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.36
+          distribution: strawberry
+          install-modules-with: cpanm
+          install-modules-args: --with-develop --with-suggests
+          install-modules: Devel::CheckLib DBI::DBD
+      - run: choco install mysql
+      - name: Build
+        run: |
+          perl Makefile.PL --testhost=127.0.0.1 --testuser=root
+          gmake
+      - name: Test
+        run: gmake test
