@@ -373,6 +373,9 @@ static enum enum_field_types mysql_to_perl_type(enum enum_field_types type)
   case MYSQL_TYPE_GEOMETRY:
   case MYSQL_TYPE_BLOB:
   case MYSQL_TYPE_TINY_BLOB:
+#if MYSQL_VERSION_ID >= 90000
+  case MYSQL_TYPE_VECTOR:
+#endif
     enum_type= MYSQL_TYPE_BLOB;
     break;
 

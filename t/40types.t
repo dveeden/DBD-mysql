@@ -18,7 +18,7 @@ if ($@) {
     plan skip_all =>
         "no database connection";
 }
-plan tests => 40;
+plan tests => 44;
 
 ok(defined $dbh, "Connected to database");
 
@@ -108,7 +108,22 @@ ok($sv->FLAGS & (SVf_IOK|SVf_IVisUV), "scalar is unsigned integer");
 ok(!($sv->FLAGS & (SVf_NOK|SVf_POK)), "scalar is not double or string");
 
 ok($dbh->do(qq{DROP TABLE t1}), "cleaning up");
+
 };
+
+SKIP: {
+skip "Vector Data types not supported by server", 4
+if !MinimumVersion($dbh, '9.0');
+
+# MySQL 9.0.0 with VECTOR type
+ok($dbh->do(qq{CREATE TABLE t1 (v VECTOR(3))}), "creating table");
+ok($dbh->do(qq{INSERT INTO t1 VALUES (TO_VECTOR("[1,2,3]"))}), "loading data");
+my $ret = $dbh->selectall_arrayref("SELECT * FROM t1");
+is_deeply($ret, [ ["\x00\x00\x80\x3F\x00\x00\x00\x40\x00\x00\x40\x40"] ]);
+ok($dbh->do(qq{DROP TABLE t1}), "cleaning up");
+
+};
+
 
 $dbh->disconnect();
 
