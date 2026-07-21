@@ -28,6 +28,9 @@ jobs:
           - os: ubuntu-24.04
             client: "9.7"
             server: "9.7"
+          - os: ubuntu-24.04-arm
+            client: "9.7-aarch64"
+            server: "9.7-aarch64"
     runs-on: ${{ matrix.os }}
     services:
       mysql:
@@ -71,8 +74,8 @@ jobs:
           EOF
       - name: "Setup mysql libs"
         run: |
-          wget https://dev.mysql.com/get/mysql-apt-config_0.8.36-1_all.deb
-          DEBIAN_FRONTEND="noninteractive" sudo dpkg -i mysql-apt-config_0.8.36-1_all.deb
+          wget https://dev.mysql.com/get/mysql-apt-config_0.8.39-1_all.deb
+          DEBIAN_FRONTEND="noninteractive" sudo dpkg -i mysql-apt-config_0.8.39-1_all.deb
           sudo apt update
           sudo apt install -y libmysqlclient-dev
       - name: "Run build"
@@ -110,8 +113,8 @@ jobs:
           sudo debconf-set-selections <<EOF
           mysql-apt-config      mysql-apt-config/select-server  select  mysql-8.4-lts
           EOF
-          wget https://dev.mysql.com/get/mysql-apt-config_0.8.36-1_all.deb
-          DEBIAN_FRONTEND="noninteractive" sudo dpkg -i mysql-apt-config_0.8.36-1_all.deb
+          wget https://dev.mysql.com/get/mysql-apt-config_0.8.39-1_all.deb
+          DEBIAN_FRONTEND="noninteractive" sudo dpkg -i mysql-apt-config_0.8.39-1_all.deb
           sudo apt update
           sudo apt install -y libmysqlclient-dev
       - name: "Run build"
